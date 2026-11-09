@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="theme-color" content="#0b1017"><title>Escuadra · Calculadora</title>
+<style>
+:root{color-scheme:dark;font:13px system-ui,-apple-system,'Segoe UI',sans-serif;color:#e9eef7;background:#0b1017;font-variant-numeric:tabular-nums}*{box-sizing:border-box}body{margin:0}main{max-width:520px;margin:auto;padding:10px 10px 24px}header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}h1{font-size:15px;letter-spacing:-.25px;margin:0;font-weight:750}small{font-size:10px;color:#94a5ba}.card{padding:10px;background:#161d28;border:1px solid #2b3746;border-radius:11px;margin-bottom:8px}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:10px}.tabs button{border:1px solid #303e4f;background:#111824;border-radius:7px;min-height:34px;font-size:11px;color:#c0ccdc;padding:5px 2px}.tabs button.active{background:#254a68;color:#fff;border-color:#4682aa;font-weight:750}.fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 75px;gap:7px;align-items:end}.field{min-width:0}label{display:block;color:#aebdd0;font-size:10.5px;font-weight:650;margin:0 0 4px}input,select{font:inherit;width:100%;height:36px;border-radius:7px;color:#edf3fa;background:#0c131e;border:1px solid #405066;padding:5px 7px;min-width:0;font-size:15px;font-weight:650}select{font-size:12px}input:focus,select:focus{outline:1px solid #73aedb;border-color:#73aedb}.hidden{display:none!important}.detail{font-size:10.5px;color:#95a7bb;margin:7px 0 0;line-height:1.4}.visual{display:flex;gap:10px;align-items:center}.diagram{flex:0 0 112px;width:112px;height:88px;overflow:visible}.tri{fill:#143247;stroke:#6bbbe0;stroke-width:2.2;stroke-linejoin:round}.right{fill:none;stroke:#8ad5ae;stroke-width:2}.svgtext{fill:#d7e9f9;font-weight:750;font-size:12px}.values{display:grid;grid-template-columns:1fr;gap:4px;flex:1;min-width:0}.val{display:flex;justify-content:space-between;align-items:baseline;gap:8px;background:#101824;border-radius:6px;padding:5px 7px;min-width:0}.val span{font-size:10.5px;color:#9fb0c3}.val strong{font-size:15px;overflow-wrap:anywhere;text-align:right}.val em{font-size:10px;font-style:normal;font-weight:450;color:#9fb0c3}.val.chosen{outline:1px solid #447f9e;background:#162b3f}.status{border-radius:7px;border:1px solid #3a495b;background:#0f1823;padding:8px 9px;margin-top:8px;font-size:12px;line-height:1.35}.status.good{color:#aef0c8;border-color:#307553;background:#12291d}.status.warn{color:#ffdaa3;border-color:#936520;background:#2c2316}.status.bad{color:#ffbfc1;border-color:#964b53;background:#301d22}.status strong{font-size:15px}.check{display:grid;grid-template-columns:1fr 133px;gap:7px}.actions{display:flex;justify-content:space-between;gap:8px;margin-top:7px}.actions button,.suggestion{color:#dce8f5;background:#202d3b;border:1px solid #394b5f;border-radius:7px;padding:8px 9px;font-size:11px;font-weight:650;cursor:pointer}.suggestions{display:grid;gap:5px;margin-top:8px}.suggestion{text-align:left;display:flex;justify-content:space-between;align-items:center;gap:7px}.suggestion b{color:#f3f6fc;font-size:12px}.suggestion span{font-size:10px;color:#a4bad0}.suggestion:active{background:#35526b}footer{font-size:10px;color:#7e91a8;line-height:1.4;text-align:center;margin:8px 1px}.hint{font-size:11px;color:#9faec1;margin:8px 0 0}.empty{font-size:12px;color:#a7bacb;padding:5px 0}@media (max-width:345px){main{padding:8px}.card{padding:8px}.fields{grid-template-columns:1fr 1fr 65px;gap:5px}.diagram{width:95px;flex-basis:95px}.val strong{font-size:13px}.check{grid-template-columns:1fr 118px}}
+</style></head><body><main>
+<header><h1>📐 Escuadra</h1><small>90° · Sin conexión</small></header>
+<section class="card">
+<div class="tabs" role="tablist" aria-label="Cálculo">
+<button id="tab-ratio" class="active" type="button">1 medida · 3:4:5</button>
+<button id="tab-legs" type="button">2 catetos</button>
+<button id="tab-hyp" type="button">Diagonal + cateto</button>
+<button id="tab-options" type="button">Solo diagonal · ideas</button>
+</div>
+<div class="fields">
+<div class="field" id="field-one"><label for="one">Medida</label><input id="one" inputmode="decimal" value="20"></div>
+<div class="field" id="field-ratio"><label for="which">Es…</label><select id="which"><option value="a">Cateto A</option><option value="b">Cateto B</option><option value="c">Diagonal</option></select></div>
+<div class="field hidden" id="field-a"><label for="a">Cateto A</label><input id="a" inputmode="decimal" value="20"></div>
+<div class="field hidden" id="field-b"><label for="b">Cateto B</label><input id="b" inputmode="decimal" value="30"></div>
+<div class="field hidden" id="field-c"><label for="c">Diagonal (regla)</label><input id="c" inputmode="decimal" value="50"></div>
+<div class="field hidden" id="field-known"><label for="known">Cateto dado</label><select id="known"><option value="a">A</option><option value="b">B</option></select></div>
+<div class="field hidden" id="field-leg"><label for="leg">Su medida</label><input id="leg" inputmode="decimal" value="30"></div>
+<div class="field"><label for="unit">Unidad</label><select id="unit"><option>mm</option><option>cm</option><option>m</option></select></div>
+</div>
+<p id="entry-hint" class="detail">Una marca y el triángulo proporcional 3:4:5.</p>
+<div id="suggest-area" class="hidden"><div class="suggestions" id="suggestions"></div><p class="detail">Toca una propuesta para calcular y usar esas marcas con tu regla como diagonal.</p></div>
+</section>
+<section class="card" id="result-card">
+<div class="visual">
+<svg class="diagram" viewBox="0 0 118 96" role="img" aria-label="Triángulo rectángulo: A horizontal, B vertical, C diagonal"><path class="tri" d="M 24 78 L 105 78 L 24 14 Z"/><path class="right" d="M24 66 L36 66 L36 78"/><text class="svgtext" x="67" y="93" text-anchor="middle">A</text><text class="svgtext" x="10" y="49">B</text><text class="svgtext" x="71" y="40">C</text></svg>
+<div class="values"><div id="val-a" class="val"><span>A · cateto</span><strong id="out-a">—</strong></div><div id="val-b" class="val"><span>B · cateto</span><strong id="out-b">—</strong></div><div id="val-c" class="val"><span>C · diagonal</span><strong id="out-c">—</strong></div></div>
+</div>
+<p id="result-hint" class="hint">Marca A y B desde la misma esquina y mide la diagonal entre ambas marcas.</p>
+</section>
+<section class="card" id="check-card">
+<div class="check"><div class="field"><label for="actual">Diagonal real medida</label><input id="actual" inputmode="decimal" placeholder="Comprobar escuadra"></div><div class="field"><label for="tol">Tolerancia orientativa</label><select id="tol"><option value="0.1">Fina · 0,1 %</option><option value="0.5" selected>Normal · 0,5 %</option><option value="1">Basta · 1 %</option></select></div></div>
+<div id="status" class="status" aria-live="polite">Introduce la diagonal real para comprobar el ángulo.</div>
+<div class="actions"><button type="button" id="copy">Copiar medidas</button><button type="button" id="reset">Reiniciar</button></div>
+</section>
+<footer>Desviación = diferencia de diagonales / diagonal ideal · 100. Los límites son orientativos, no tolerancias de fabricación. Para precisión alta, usa instrumentos adecuados.</footer>
+</main>
+<script>
+(()=>{'use strict';const $=x=>document.getElementById(x);let mode='ratio',result=null,proposalData=[];
+const number=v=>{let s=String(v??'').trim().replace(/\s/g,'').replace(',','.');if(!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(s))return NaN;let n=+s;return Number.isFinite(n)&&n>0?n:NaN};
+const fmt=(n,d=3)=>Number.isFinite(n)?new Intl.NumberFormat('es-ES',{maximumFractionDigits:d}).format(n):'—';
+const unit=()=>$('unit').value;
+const mmPerUnit=()=>({mm:1,cm:10,m:1000})[unit()];
+const nice=(v)=>`${fmt(v,4)} ${unit()}`;
+const out=(id,n)=>{ $(id).textContent=Number.isFinite(n)?nice(n):'—'; };
+function options(c){
+  if(!Number.isFinite(c)||c<=0)return [];
+  const cmill=c*mmPerUnit();const stepmm=cmill<50?1:cmill<120?2:cmill<400?5:10;
+  const candidates=[];
+  const add=(a,label)=>{if(!Number.isFinite(a)||a<=0||a>=c)return;let b=Math.sqrt(Math.max(0,c*c-a*a));if(b<=0)return;let lo=Math.min(a,b),hi=Math.max(a,b);if(lo/c<.24)return;const key=Math.round(lo/c*10000);if(candidates.some(z=>Math.abs(z.lo-lo)<stepmm/mmPerUnit()*.45))return;
+    // Smooth readable marking scores: prefer whole millimetres, then 5 mm, then 10 mm.
+    const distMm=x=>Math.abs(x*mmPerUnit()-Math.round(x*mmPerUnit()));
+    const score=(distMm(lo)+distMm(hi))*3+Math.min(Math.abs((lo*mmPerUnit())%10),Math.abs(10-(lo*mmPerUnit())%10))/10+Math.min(Math.abs((hi*mmPerUnit())%10),Math.abs(10-(hi*mmPerUnit())%10))/10;
+    candidates.push({a:lo,b:hi,lo,score,label,key});
+  };
+  add(c*.6,'3:4:5');
+  const base=Math.max(stepmm/mmPerUnit(),c/250);
+  for(let x=c*.27;x<=c*.70;x+=base){let n=Math.round(x/(stepmm/mmPerUnit()))*(stepmm/mmPerUnit());add(n,'Marcas cómodas')}
+  for(const r of [[5,13],[8,17],[7,25],[20,29]])add(c*r[0]/r[1],'Otra proporción');
+  const first=candidates.find(x=>x.label==='3:4:5');
+  let sorted=candidates.filter(x=>x!==first).sort((x,y)=>x.score-y.score||Math.abs(x.lo/c-.6)-Math.abs(y.lo/c-.6));
+  const chosen=first?[first]:[];
+  for(const it of sorted){if(chosen.every(x=>Math.abs(x.lo-it.lo)>c*.055)){chosen.push(it);if(chosen.length===3)break}}
+  return chosen;
+}
+function suggestions(c){let host=$('suggestions');host.replaceChildren();proposalData=options(c);if(!proposalData.length){host.innerHTML='<div class="empty">Introduce una diagonal válida.</div>';return}
+ proposalData.forEach((p,i)=>{const bt=document.createElement('button');bt.type='button';bt.className='suggestion';let name=i===0?'Clásica 3:4:5':`Alternativa ${i}`;bt.innerHTML=`<span>${name}</span><b>A ${nice(p.a)} · B ${nice(p.b)}</b>`;bt.addEventListener('click',()=>{$('c').value=fmt(c,6);$('known').value='a';$('leg').value=fmt(p.a,6);setMode('hyp')});host.append(bt)});
+}
+function render(){let a,b,c,valid=true;
+  if(mode==='ratio'){let v=number($('one').value),k=v/({a:3,b:4,c:5}[$('which').value]);a=3*k;b=4*k;c=5*k}
+  else if(mode==='legs'){a=number($('a').value);b=number($('b').value);c=Math.hypot(a,b)}
+  else {c=number($('c').value);
+    if(mode==='hyp'){const l=number($('leg').value);valid=Number.isFinite(l)&&Number.isFinite(c)&&c>l;if(valid){const other=Math.sqrt((c-l)*(c+l));a=$('known').value==='a'?l:other;b=$('known').value==='b'?l:other}}
+    else {a=NaN;b=NaN}
+  }
+  const ready=mode!=='options'&&valid&&[a,b,c].every(n=>Number.isFinite(n)&&n>0);
+  result=ready?{a,b,c,unit:unit()}:null;
+  out('out-a',a);out('out-b',b);out('out-c',c);
+  for(const k of ['a','b','c'])$('val-'+k).classList.toggle('chosen',ready&&(mode==='ratio'?$('which').value===k:mode==='legs'?k!=='c':mode==='hyp'?k==='c'||k===$('known').value:k==='c'));
+  $('result-card').classList.toggle('hidden',mode==='options');$('check-card').classList.toggle('hidden',mode==='options');$('suggest-area').classList.toggle('hidden',mode!=='options');
+  if(mode==='options')suggestions(c);
+  $('result-hint').textContent=mode==='hyp'?'Coloca las dos marcas a A y B desde la misma esquina. Tu regla debe unirlas exactamente como diagonal C.':'Marca A y B desde la misma esquina. Comprueba C entre ambas marcas.';
+  check();
+}
+function check(){const el=$('status');el.className='status';let raw=$('actual').value.trim();if(!result){el.textContent=mode==='hyp'?'La diagonal debe ser mayor que el cateto.':'Introduce medidas válidas.';return}if(!raw){el.textContent='Introduce la diagonal real medida para comprobar el ángulo.';return}const real=number(raw);if(!Number.isFinite(real)){el.classList.add('bad');el.textContent='La diagonal real no es válida.';return}const {a,b,c}=result;
+ if(!(real>Math.abs(a-b)&&real<a+b)){el.classList.add('bad');el.textContent='Estas tres medidas no forman un triángulo. Revísalas.';return}
+ let delta=real-c,pct=Math.abs(delta)/c*100,threshold=+$('tol').value;
+ let angle=Math.acos(Math.max(-1,Math.min(1,(a*a+b*b-real*real)/(2*a*b))))*180/Math.PI;
+ const pass=pct<=threshold+1e-10;el.classList.add(pass?'good':pct<=threshold*2?'warn':'bad');
+ el.innerHTML=`<strong>${fmt(pct,3)} %</strong> de desviación · <strong>${fmt(angle,3)}°</strong><div>${pass?'✓ Dentro de tolerancia':'✕ Fuera de tolerancia'} · C ${delta>=0?'más larga':'más corta'} ${fmt(Math.abs(delta),4)} ${unit()}</div>`;
+}
+function setMode(next){mode=next;for(const name of ['ratio','legs','hyp','options'])$('tab-'+name).classList.toggle('active',name===next);
+ for(const id of ['field-one','field-ratio','field-a','field-b','field-c','field-known','field-leg'])$(id).classList.add('hidden');
+ const show={ratio:['field-one','field-ratio'],legs:['field-a','field-b'],hyp:['field-c','field-leg','field-known'],options:['field-c']};for(const id of show[next])$(id).classList.remove('hidden');
+ const hints={ratio:'Marca inicial con proporción 3:4:5.',legs:'Calcula la diagonal que deberías medir.',hyp:'Diagonal C = longitud de tu regla. Introduce el cateto que elijas.',options:'Tu regla hará de diagonal. Elige dos marcas fáciles.'};$('entry-hint').textContent=hints[next];$('actual').value='';render();}
+ for(const id of ['one','which','a','b','c','known','leg','unit','actual','tol'])$(id).addEventListener('input',render);
+ for(const name of ['ratio','legs','hyp','options'])$('tab-'+name).addEventListener('click',()=>setMode(name));
+ $('reset').addEventListener('click',()=>{$('one').value='20';$('which').value='a';$('a').value='20';$('b').value='30';$('c').value='50';$('known').value='a';$('leg').value='30';$('unit').value='mm';$('tol').value='0.5';setMode('ratio')});
+ $('copy').addEventListener('click',async()=>{if(!result)return;const {a,b,c}=result;const value=`Escuadra 90° · A: ${nice(a)} · B: ${nice(b)} · C: ${nice(c)}`;const btn=$('copy');try{await navigator.clipboard.writeText(value);btn.textContent='Copiado ✓'}catch(e){const t=document.createElement('textarea');t.value=value;t.style.cssText='position:fixed;left:-2000px';document.body.append(t);t.select();let ok=document.execCommand('copy');t.remove();btn.textContent=ok?'Copiado ✓':'No disponible'}setTimeout(()=>btn.textContent='Copiar medidas',1300)});
+ setMode('ratio');
+})();
+</script></body></html>
